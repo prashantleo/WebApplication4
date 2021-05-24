@@ -9,7 +9,7 @@ namespace WebApplication4.Models
 {
     public class Product
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+       
         [Key]
         public int ProductId { get; set; }
 

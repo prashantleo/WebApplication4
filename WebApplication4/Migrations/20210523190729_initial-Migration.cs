@@ -2,7 +2,7 @@
 
 namespace WebApplication4.Migrations
 {
-    public partial class initialmigration : Migration
+    public partial class initialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,7 +24,8 @@ namespace WebApplication4.Migrations
                 name: "Product",
                 columns: table => new
                 {
-                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductName = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
@@ -37,7 +38,8 @@ namespace WebApplication4.Migrations
                 name: "Store",
                 columns: table => new
                 {
-                    StoreId = table.Column<int>(type: "int", nullable: false),
+                    StoreId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     StoreName = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(100)", nullable: true)
                 },
@@ -50,20 +52,22 @@ namespace WebApplication4.Migrations
                 name: "Sales",
                 columns: table => new
                 {
-                    SalesId = table.Column<int>(type: "int", nullable: false),
+                    SalesId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false),
+                    Customerid = table.Column<int>(type: "int", nullable: true),
                     StoreId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sales", x => x.SalesId);
                     table.ForeignKey(
-                        name: "FK_Sales_Customers_CustomerId",
-                        column: x => x.CustomerId,
+                        name: "FK_Sales_Customers_Customerid",
+                        column: x => x.Customerid,
                         principalTable: "Customers",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Sales_Product_ProductId",
                         column: x => x.ProductId,
@@ -79,9 +83,9 @@ namespace WebApplication4.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sales_CustomerId",
+                name: "IX_Sales_Customerid",
                 table: "Sales",
-                column: "CustomerId");
+                column: "Customerid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sales_ProductId",

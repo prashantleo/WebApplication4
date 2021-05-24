@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import  {connect} from "react-redux"
-import * as actions from "../actions/Customers"
-import Customerform from "../components/Customerform"
+import * as actions from "../actions/Products/Products"
+import Productform from "../components/Productform"
 import {TableContainer} from "@material-ui/core"
 import { Grid,TableHead, Paper,TableRow, TableCell, TableBody , withStyles, ButtonGroup, Button} from '@material-ui/core';
 import EditIcon from "@material-ui/icons/Edit";
@@ -19,28 +19,28 @@ const styles = theme => ({
         padding: theme.spacing(2)
     }
 })
-const Customers=({classes,...props})=>{
+const Products=({classes,...props})=>{
     const [currentId, setCurrentId] = useState(0)
     useEffect(()=>{
-        props.fetchAllCustomers()
+        props.fetchAllProducts()
     },[])
 
     const onDelete = id => {
         if (window.confirm('Are you sure to delete this record?'))
-            props.deleteCustomer(id)
+            props.deleteProducts(id)
     }
     return(
          <Paper className={classes.paper} elevation={3}>
              <Grid item xs={6}>
     
-        <Customerform {...({currentId,setCurrentId})}></Customerform>
+        <Productform {...({currentId,setCurrentId})}></Productform>
         </Grid>
         <Grid  item xs={6}>
         <TableContainer>
         <TableHead>
                     <TableRow>
-                    <TableCell>Customer Name</TableCell>
-                    <TableCell>Address</TableCell>
+                    <TableCell>Product Name</TableCell>
+                    <TableCell>Price</TableCell>
 
                     <TableCell>Actions</TableCell>
                     
@@ -49,16 +49,16 @@ const Customers=({classes,...props})=>{
                     </TableHead>
                     <TableBody>
                     {
-                                    props.CustomerList.map((record, index) => {
+                                    props.ProductList.map((record, index) => {
                                         return (<TableRow key={index} hover>
-                                            <TableCell>{record.customerName}</TableCell>
-                                            <TableCell>{record.customerAddress}</TableCell>
+                                            <TableCell>{record.productName}</TableCell>
+                                            <TableCell>{record.price}</TableCell>
                                             <TableCell>
                                                 <ButtonGroup variant="text">
                                                     <Button><EditIcon color="primary"
-                                                        onClick={() => { setCurrentId(record.id) }} /></Button>
+                                                        onClick={() => { setCurrentId(record.productId) }} /></Button>
                                                     <Button><DeleteIcon color="secondary"
-                                                        onClick={() => onDelete(record.id)} /></Button>
+                                                        onClick={() => onDelete(record.productId)} /></Button>
                                                 </ButtonGroup>
                                             </TableCell>
                                           
@@ -73,12 +73,12 @@ const Customers=({classes,...props})=>{
 }
 const mapStateToProps=state=>({
     
-        CustomerList:state.Customer.list
+        ProductList:state.Product.list
     })
 
     const mapActionsToProps={
-        fetchAllCustomers:actions.fetchALL,
-        deleteCustomer: actions.Delete
+        fetchAllProducts:actions.fetchALL,
+        deleteProducts: actions.Delete
     }
 
-export default connect(mapStateToProps,mapActionsToProps)(withStyles(styles)(Customers))
+export default connect(mapStateToProps,mapActionsToProps)(withStyles(styles)(Products))

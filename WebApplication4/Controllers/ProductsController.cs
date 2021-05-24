@@ -11,47 +11,47 @@ namespace WebApplication4.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SalesController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         private readonly StoreDbContext _context;
 
-        public SalesController(StoreDbContext context)
+        public ProductsController(StoreDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Sales
+        // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Sales>>> GetSales()
+        public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
         {
-            return await _context.Sales.ToListAsync();
+            return await _context.Product.ToListAsync();
         }
 
-        // GET: api/Sales/5
+        // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Sales>> GetSales(int id)
+        public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var sales = await _context.Sales.FindAsync(id);
+            var product = await _context.Product.FindAsync(id);
 
-            if (sales == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return sales;
+            return product;
         }
 
-        // PUT: api/Sales/5
+        // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSales(int id, Sales sales)
+        public async Task<IActionResult> PutProduct(int id, Product product)
         {
-            if (id != sales.SalesId)
+            if (id != product.ProductId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(sales).State = EntityState.Modified;
+            _context.Entry(product).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace WebApplication4.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SalesExists(id))
+                if (!ProductExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace WebApplication4.Controllers
             return NoContent();
         }
 
-        // POST: api/Sales
+        // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Sales>> PostSales(Sales sales)
+        public async Task<ActionResult<Product>> PostProduct(Product product)
         {
-            _context.Sales.Add(sales);
+            _context.Product.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSales", new { id = sales.SalesId }, sales);
+            return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
         }
 
-        // DELETE: api/Sales/5
+        // DELETE: api/Products/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSales(int id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
-            var sales = await _context.Sales.FindAsync(id);
-            if (sales == null)
+            var product = await _context.Product.FindAsync(id);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            _context.Sales.Remove(sales);
+            _context.Product.Remove(product);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool SalesExists(int id)
+        private bool ProductExists(int id)
         {
-            return _context.Sales.Any(e => e.SalesId == id);
+            return _context.Product.Any(e => e.ProductId == id);
         }
     }
 }

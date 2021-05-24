@@ -1,30 +1,30 @@
- import { TextField } from '@material-ui/core'
+import { TextField } from '@material-ui/core'
 import React,{useState,useEffect} from 'react'
 import Button from '@material-ui/core/Button';
 
-import './Customerform.css'
+
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import useForm from "./useForm"
 import { connect } from "react-redux";
-import * as actions from '../actions/Customers'
-import Grid from '@material-ui/core/Grid'
-import Form from './Form'
-import Input from './input'
-
-
+import * as actions from '../actions/Sales/Sales'
 
 
 
 const initialFieldValues={
 
-    customerName:'',
-    customerAddress:''
+  productId:'',
+  productName:'',
+  id:'',
+  customerId:'',
+  customerName:'',
+  storeId:'',
+  storeName:''
 
 }
 
 
-const CustomerForm =({classes,...props})=>{
+const SalesForm =({classes,...props})=>{
 
     const {
         values,
@@ -37,7 +37,11 @@ const CustomerForm =({classes,...props})=>{
     const validate=()=>{
         let temp={}
         temp.customerName=values.customerName?"" : "This field is required."
-        temp.customerAddress=values.customerAddress ? "" : "This field is required."
+        temp.productName=values.productName ? "" : "This field is required."
+        temp.id=values.id ? "" : "This field is required."
+        temp.storeName=values.storeName ? "" : "This field is required."
+        temp.storeId=values.storeId ? "" : "This field is required."
+        temp.productId=values.productId ? "" : "This field is required."
         setErrors({
             ...temp
         })
@@ -59,15 +63,15 @@ const handleClickOpen = () => {
       
       if(validate()){
           if(props.currentId==0)
-        props.createCustomer(values,()=>{window.alert('insert')})
+        props.createSales(values,()=>{window.alert('insert')})
         else
-        props.updateCustomer(props.currentId,values,()=>{window.alert('updated')})
+        props.updateSales(props.currentId,values,()=>{window.alert('updated')})
       }
   }
   useEffect(() => {
     if (props.currentId != 0) {
         setValues({
-            ...props.CustomerList.find(x => x.id == props.currentId)
+            ...props.SalesList.find(x => x.id == props.currentId)
         })
         setErrors({})
     }
@@ -76,44 +80,56 @@ const handleClickOpen = () => {
 
     return (<div>
           <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        New Customer
+        Add a sales
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogContent>
-        <Form onSubmit={handleSubmit} >
-          <h1>Add a Customer</h1>
-            <Input
-             label="Customer Name"
-             name="customerName"
+        <form autoComplete="off" noValidate onSubmit={handleSubmit}>
+        <h1>Add a Sales record</h1>
+            
+       
+        <TextField
+             label="Customer Id"
+             name="id"
              variant="outlined"
-             value={values.customerName}
-             onChange={handleInputChange}></Input>
+             value={values.id}
+             onChange={handleInputChange}></TextField>
+            
              
-        <Input
-             label="Customer Address"
-             name="customerAddress"
+        <TextField
+             label="Product Id"
+             name="productId"
              variant="outlined"
-             value={values.customerAddress}
-             onChange={handleInputChange}></Input>
-           
+             value={values.productId}
+             onChange={handleInputChange}></TextField>
+      
+                   
+        <TextField
+             label="Store Id"
+             name="storeId"
+             variant="outlined"
+             value={values.storeId}
+             onChange={handleInputChange}></TextField>
+                   
+       
+    
            <div className="ButtonGroup">
-               <Button className="CreateCustomer"
+               <Button
                             variant="contained"
                             color="primary"
                             type="submit"
                         
                         >
-                            Create
+                            Submit
                         </Button>
-                        <Button className="Cancel"
+                        <Button
                             variant="contained"
                             onClick={resetForm}
                         >
-                            Cancel
+                            Reset
                         </Button>
            </div>
-           
-        </Form>
+        </form>
         </DialogContent>
         </Dialog>
     </div>
@@ -121,12 +137,12 @@ const handleClickOpen = () => {
 }
 const mapStateToProps=state=>({
     
-    CustomerList:state.Customer.list
+    SalesList:state.Sales.list
 })
 
 const mapActionsToProps={
-    createCustomer: actions.create,
-    updateCustomer: actions.update
+    createSales: actions.create,
+    updateSales: actions.update
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(CustomerForm);
+export default connect(mapStateToProps, mapActionsToProps)(SalesForm) ;

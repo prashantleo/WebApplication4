@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import  {connect} from "react-redux"
-import * as actions from "../actions/Customers"
-import Customerform from "../components/Customerform"
+import * as actions from "../actions/Sales/Sales"
+import Salesform from "../components/Salesform"
 import {TableContainer} from "@material-ui/core"
 import { Grid,TableHead, Paper,TableRow, TableCell, TableBody , withStyles, ButtonGroup, Button} from '@material-ui/core';
 import EditIcon from "@material-ui/icons/Edit";
@@ -19,29 +19,30 @@ const styles = theme => ({
         padding: theme.spacing(2)
     }
 })
-const Customers=({classes,...props})=>{
+const SALES=({classes,...props})=>{
     const [currentId, setCurrentId] = useState(0)
     useEffect(()=>{
-        props.fetchAllCustomers()
+        props.fetchAllSales()
     },[])
 
     const onDelete = id => {
         if (window.confirm('Are you sure to delete this record?'))
-            props.deleteCustomer(id)
+            props.deleteSales(id)
     }
     return(
          <Paper className={classes.paper} elevation={3}>
              <Grid item xs={6}>
     
-        <Customerform {...({currentId,setCurrentId})}></Customerform>
+        <Salesform {...({currentId,setCurrentId})}></Salesform>
         </Grid>
         <Grid  item xs={6}>
         <TableContainer>
         <TableHead>
                     <TableRow>
+                    <TableCell>Product Name</TableCell>
                     <TableCell>Customer Name</TableCell>
-                    <TableCell>Address</TableCell>
-
+                    <TableCell>Store Name</TableCell>
+                    <TableCell>Date</TableCell>
                     <TableCell>Actions</TableCell>
                     
                     
@@ -49,16 +50,20 @@ const Customers=({classes,...props})=>{
                     </TableHead>
                     <TableBody>
                     {
-                                    props.CustomerList.map((record, index) => {
+                                    props.SalesList.map((record, index) => {
                                         return (<TableRow key={index} hover>
-                                            <TableCell>{record.customerName}</TableCell>
-                                            <TableCell>{record.customerAddress}</TableCell>
+                                            <TableCell>{record.productId}</TableCell>
+                                            <TableCell>{record.id}</TableCell>
+                                            <TableCell>{record.storeId}</TableCell>
+                                            <TableCell>{record.date}</TableCell>
+
+
                                             <TableCell>
                                                 <ButtonGroup variant="text">
                                                     <Button><EditIcon color="primary"
-                                                        onClick={() => { setCurrentId(record.id) }} /></Button>
+                                                        onClick={() => { setCurrentId(record.salesId) }} /></Button>
                                                     <Button><DeleteIcon color="secondary"
-                                                        onClick={() => onDelete(record.id)} /></Button>
+                                                        onClick={() => onDelete(record.salesId)} /></Button>
                                                 </ButtonGroup>
                                             </TableCell>
                                           
@@ -73,12 +78,12 @@ const Customers=({classes,...props})=>{
 }
 const mapStateToProps=state=>({
     
-        CustomerList:state.Customer.list
+        SalesList:state.Sales.list
     })
 
     const mapActionsToProps={
-        fetchAllCustomers:actions.fetchALL,
-        deleteCustomer: actions.Delete
+        fetchAllSales:actions.fetchALL,
+        deleteSales: actions.Delete
     }
 
-export default connect(mapStateToProps,mapActionsToProps)(withStyles(styles)(Customers))
+export default connect(mapStateToProps,mapActionsToProps)(withStyles(styles)(SALES))
