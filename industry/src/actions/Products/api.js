@@ -1,7 +1,7 @@
   
 import axios from "axios";
 
-const baseUrl = "http://localhost:25376/api/"
+const baseUrl = "https://customermgmtapii.azurewebsites.net/api/"
 
 
 

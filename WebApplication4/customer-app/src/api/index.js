@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = 'http://localhost:25376/api/';
+const BASE_URL = 'https://customermgmtapii.azurewebsites.ne/api/';
 
 export const ENDPIONTS = {
     CUSTOMER: 'Customers'
